@@ -17,6 +17,13 @@ class TypeInfo {
     create(...args:any[]):any {
         return new (this._constructor)(...args);
     }
+    createWithProperties<T>(properties:Partial<T>):T {
+        let ret = new (this._constructor)();
+        for(let prop of Object.keys(properties)) {
+            ret[prop] = properties[prop];
+        }
+        return ret;
+    }
     ensureForField(fieldName:string):DataField {
         let field = this.fields.get(fieldName);
         if (!field) {
@@ -77,7 +84,11 @@ export function forConstructor(constructor:ConstructorFunction):TypeInfo {
 export function createEmptyEntity<T extends IEntity>(classRef:TypeClass<T>) :T {
     let type = forType(classRef);
     return typesManager.preprocess(type.create(), true);
+}
 
+export function createEntity<T extends IEntity>(classRef: TypeClass<T>, properties:Partial<T>) {
+    let type = forType(classRef);
+    return typesManager.preprocess(type.createWithProperties(properties));
 }
 
 export function preprocessEntity<T extends IEntity>(entity:T):T {

@@ -1,10 +1,10 @@
 import {dataType, string, entity, required, objectId, trim, defaultValue, lowerCase} from "../decorators";
-import {createEmptyEntity, forType, preprocessEntity} from "../index";
+import {createEmptyEntity, createEntity, forType, preprocessEntity} from "../index";
 
 describe('Testing metadata for types', () => {
     it('registers a type for metadata', () => {
         @entity()
-        @dataType('ZohoUser')
+        @dataType('AppUser')
         class User {
             @objectId()
             @required()
@@ -34,6 +34,13 @@ describe('Testing metadata for types', () => {
         userObj.name = "Some value to trim "
         let cleanUser = preprocessEntity(userObj);
         console.info(JSON.stringify(cleanUser));
+
+        let user2:User = createEntity(User, {
+            name:"Long user name ",
+            _email: "User-with@Uper-case.com"
+        });
+        console.info(user2);
+
         return true;
     })
 })

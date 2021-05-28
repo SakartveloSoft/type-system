@@ -23,6 +23,7 @@ export class DataField {
     hidden: boolean = false;
     preprocessors: PreprocessorFunction[] = [];
     defaultValue: any;
+    haveKeywords: boolean = false;
     constructor(name:string, type: DataFieldType) {
         this.name = name;
         this.type = type;

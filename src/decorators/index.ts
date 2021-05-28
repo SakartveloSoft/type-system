@@ -7,3 +7,4 @@ export {hiddenFromClient} from "./hiddenFromClient";
 export {lowerCase} from "./lower-case";
 export {trim} from "./trim-string";
 export {defaultValue} from "./default-value";
+export {haveKeywords} from "./have-keywords";
