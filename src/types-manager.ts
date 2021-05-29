@@ -1,8 +1,7 @@
-import {DataField, DataFieldType} from "./data-field";
-import {IEntity} from "./entity-types";
+import {DataField} from "./data-field";
+import {DataFieldType, ConstructorFunction, IEntity, TypeClass} from "./entity-types";
 
-export type ConstructorFunction = {new (...args:any[]):any;}
-class TypeInfo {
+export class TypeInfo {
     name:string;
     private readonly _constructor:ConstructorFunction;
     isEntity: boolean = false;
@@ -72,7 +71,6 @@ class TypesManager {
 
 export const typesManager = new TypesManager();
 
-export type TypeClass<T> = { new () : T};
 
 export function forType<T>(typeClass:TypeClass<T>):TypeInfo {
     return typesManager.getForType(typeClass);

@@ -1,3 +1,4 @@
+import {ConstructorFunction} from "../entity-types";
 import {forConstructor} from "../types-manager";
 
 export function haveKeywords() {

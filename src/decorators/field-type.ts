@@ -1,5 +1,6 @@
-import {ConstructorFunction, forConstructor} from "../types-manager";
-import {DataField, DataFieldType} from "../data-field";
+import {ConstructorFunction, DataFieldType} from "../entity-types";
+import {forConstructor} from "../types-manager";
+import {DataField} from "../data-field";
 
 function makeTypedFieldFunctor(fieldType:DataFieldType, fieldSetup?:((field:DataField) => void)) {
     return (target:any, property:string) => {

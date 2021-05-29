@@ -1,20 +1,6 @@
 import {PreProcessorBuiltInId, PreprocessorFunction, resolveBuiltInPreprocessor} from "./pre-processors";
+import {DataFieldType} from "./entity-types";
 
-export enum DataFieldType {
-    anyType = "anyType",
-    string = "string",
-    integer = "integer",
-    float = "float",
-    boolean = "boolean",
-    dateTime = "dateTime",
-    dateOnly = "dateOnly",
-    fixedString = "fixedString",
-    objectId = "objectId",
-    array = "array",
-    object = "object",
-    text = "text",
-    json = "json",
-}
 export class DataField {
     public name: string;
     public type: DataFieldType = DataFieldType.anyType;
@@ -43,5 +29,4 @@ export class DataField {
         }
         return value;
     }
-
 }

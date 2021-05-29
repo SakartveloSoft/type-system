@@ -1,4 +1,5 @@
-import {ConstructorFunction, forConstructor} from "../types-manager";
+import {ConstructorFunction} from "../entity-types";
+import {forConstructor} from "../types-manager";
 
 export function defaultValue(value:any) {
     return (target:any, property:string) => {

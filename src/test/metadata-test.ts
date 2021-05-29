@@ -1,5 +1,5 @@
 import {dataType, string, entity, required, objectId, trim, defaultValue, lowerCase} from "../decorators";
-import {createEmptyEntity, createEntity, forType, preprocessEntity} from "../index";
+import {createEmptyEntity, createEntity, forType, preprocessEntity, validateEntity} from "../index";
 
 describe('Testing metadata for types', () => {
     it('registers a type for metadata', () => {
@@ -40,6 +40,9 @@ describe('Testing metadata for types', () => {
             _email: "User-with@Uper-case.com"
         });
         console.info(user2);
+
+        let validationError = validateEntity(User, cleanUser, true);
+        console.info(validationError?.errors);
 
         return true;
     })
