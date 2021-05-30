@@ -75,6 +75,16 @@ class TypesManager {
         }
         return entity;
     }
+    excludeHiddenData<T>(entity:T):Partial<T> {
+        let type = this.getForConstructor(<ConstructorFunction>entity.constructor);
+        let result:Partial<T> = {};
+        for(let prop of type.fields.values()) {
+            if (!prop.hidden) {
+                result[prop.name] = entity[prop.name];
+            }
+        }
+        return result;
+    }
 }
 
 export const typesManager = new TypesManager();
@@ -103,4 +113,8 @@ export function createEntity<T extends IEntity>(classRef: TypeClass<T>, properti
 
 export function preprocessEntity<T extends IEntity>(entity:T):T {
     return typesManager.preprocess(entity);
+}
+
+export function getClientSafeData<T extends IEntity>(entity:T):Partial<T> {
+    return typesManager.excludeHiddenData(entity);
 }
