@@ -1,15 +1,20 @@
 {
   "name": "@sakartvelosoft/type-system",
   "version": "0.1.1",
-  "description": "",
+  "description": "A generic library for entities construction and validation based on entity types and decorators",
+  "keywords": ["types", "metadata", "entities", "validation", "typescript", "decorators"],
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "mocha -r ts-node/register src/tests/**/*.test.ts",
     "prepublish": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Kote Isaev at SakartveloSoft",
+    "url": "www.sakartvelosoft.com",
+    "email": "kote.isaev@sakartvelosoft.com"
+  },
+  "license": "",
   "devDependencies": {
     "@types/chai": "^4.2.18",
     "@types/mocha": "^8.2.2",
