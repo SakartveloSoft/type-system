@@ -9,27 +9,28 @@ import {
     string,
     trim
 } from "../decorators";
+import {IEntity} from "../entity-types";
 
 @entity()
 @dataType('AppUser')
-export class User {
+export class User implements IEntity{
     @objectId()
     @required()
-    id: string;
+    id?: string;
     @string()
     @required()
     @lowerCase()
-    email:string;
+    email?:string;
     @string()
     @required()
     @trim()
-    name: string;
+    name?: string;
     @string()
     @required()
     @defaultValue('active')
-    status:string;
+    status?:string;
     @hiddenFromClient()
-    passwordHash:string;
+    passwordHash?:string;
     @hiddenFromClient()
-    passwordSalt:string;
+    passwordSalt?:string;
 }

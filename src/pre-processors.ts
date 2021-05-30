@@ -18,5 +18,5 @@ preprocessorsMap.set(PreProcessorBuiltInId.lowerCase, lowerCase);
 
 
 export function resolveBuiltInPreprocessor(id: PreProcessorBuiltInId):PreprocessorFunction {
-    return preprocessorsMap.get(id);
+    return <PreprocessorFunction>preprocessorsMap.get(id);
 }

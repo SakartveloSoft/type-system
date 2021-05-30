@@ -50,7 +50,7 @@ const knownValidationNotices = {
     }
 }
 
-let validationFunctors:{[fieldType:string]:(field:DataField, value:any) => IValidationNotice } = {
+let validationFunctors:{[fieldType:string]:(field:DataField, value:any) => (IValidationNotice|undefined) } = {
     [DataFieldType.string]:(field, value) => {
         if (typeof(value) !== "string") {
             return knownValidationNotices.typeMismatch(field, typeof(value));
@@ -95,14 +95,14 @@ let validationFunctors:{[fieldType:string]:(field:DataField, value:any) => IVali
     },
     [DataFieldType.dateTime]:(field, value:any) => {
         if (value instanceof Date) {
-            return null;
+            return undefined;
         }
         if (typeof(value) === 'string') {
             try {
                 let parsed = new Date(value);
                 let time = parsed.getTime();
                 if (!isNaN(time)) {
-                    return null;
+                    return undefined;
                 }
             } catch (e) {
                 //we can not do anything special here, returning validation error can be enough
@@ -116,12 +116,12 @@ let validationFunctors:{[fieldType:string]:(field:DataField, value:any) => IVali
 
 }
 
-export function validateFieldValue(field:DataField, value: any):IValidationNotice {
+export function validateFieldValue(field:DataField, value: any):(IValidationNotice | undefined) {
     if (value === undefined || value === null || value === '') {
         if (field.required) {
             return knownValidationNotices.required(field);
         } else {
-            return null;
+            return undefined;
         }
     }
     if (field.type !== DataFieldType.anyType) {
@@ -135,11 +135,11 @@ export function validateFieldValue(field:DataField, value: any):IValidationNotic
 
     }
 
-
+    return undefined;
 }
 
 export class ValidationError extends Error{
-    public readonly type: TypeInfo;
+    public readonly type?: TypeInfo;
     public readonly errors: IValidationNotice[];
     constructor(message:string, type?:TypeInfo, ...validationNotices:IValidationNotice[]) {
         super(message);
@@ -148,11 +148,11 @@ export class ValidationError extends Error{
     }
 }
 
-export function validateEntity<T>(classRef:TypeClass<T>,  entity:T, noThrow?:boolean):ValidationError {
+export function validateEntity<T>(classRef:TypeClass<T>,  entity:T, noThrow?:boolean):(ValidationError|undefined) {
     let type = forType(classRef);
     let validationNotices: IValidationNotice[] = [];
     for(let field of type.fields.values()) {
-        let value = entity[field.name];
+        let value = entity[<keyof T>field.name];
         let validationNotice = validateFieldValue(field, value);
         if (validationNotice) {
             validationNotices.push(validationNotice);

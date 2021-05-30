@@ -20,7 +20,7 @@ describe('Testing metadata for types', () => {
         userObj.name = "Some value to trim "
         let cleanUser = preprocessEntity(userObj);
         console.info(JSON.stringify(cleanUser));
-        expect(cleanUser.status).equal(forType(User).fields.get('status').defaultValue);
+        expect(cleanUser.status).equal(forType(User).fields.get('status')?.defaultValue);
         expect(cleanUser.email).equal(userObj.email.toLowerCase(), 'User email must be lower-cased');
         expect(cleanUser.name).equal(userObj.name.trim(), 'User name must be trimmed');
         

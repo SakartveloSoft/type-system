@@ -20,6 +20,5 @@ export enum DataFieldType {
 }
 
 export interface IEntity {
-    id: string;
     [name:string]:any;
 }

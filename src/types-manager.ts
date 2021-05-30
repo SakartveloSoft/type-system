@@ -5,7 +5,7 @@ export class TypeInfo {
     name:string;
     private readonly _constructor:ConstructorFunction;
     isEntity: boolean = false;
-    inheritsFrom: string = null;
+    inheritsFrom: string = "entity";
     dataType: string = "entity";
     built:boolean = false;
     fields: Map<string, DataField> = new Map<string, DataField>();
@@ -21,7 +21,7 @@ export class TypeInfo {
     create(...args:any[]):any {
         return new (this._constructor)(...args);
     }
-    createWithProperties<T>(properties:Partial<T>, produceId?:boolean):T {
+    createWithProperties<T extends IEntity>(properties:Partial<T>, produceId?:boolean):T {
         let ret = new (this._constructor)();
         for(let prop of Object.keys(properties)) {
             ret[prop] = properties[prop];
@@ -59,28 +59,28 @@ class TypesManager {
         }
         return typeInfo;
     }
-    preprocess<T>(entity:T, forCreation?:boolean):T {
+    preprocess<T extends IEntity>(entity:T, forCreation?:boolean):T {
         let type = this.getForConstructor(<ConstructorFunction>entity.constructor);
         for(let field of type.fields.values()) {
             if (!entity.hasOwnProperty(field.name) || entity[field.name] === null || entity[field.name] === undefined || entity[field.name] === '') {
                 if (forCreation) {
                     if (field.defaultValue !== null && field.defaultValue !== undefined) {
-                        entity[field.name] = field.defaultValue;
+                        entity[<keyof T>field.name] = field.defaultValue;
                     }
                 } else {
                     continue;
                 }
             }
-            entity[field.name] = field.preprocess(entity[field.name]);
+            entity[<keyof T>field.name] = field.preprocess(entity[field.name]);
         }
         return entity;
     }
-    excludeHiddenData<T>(entity:T):Partial<T> {
+    excludeHiddenData<T extends IEntity>(entity:T):Partial<T> {
         let type = this.getForConstructor(<ConstructorFunction>entity.constructor);
         let result:Partial<T> = {};
         for(let prop of type.fields.values()) {
             if (!prop.hidden) {
-                result[prop.name] = entity[prop.name];
+                result[<keyof T>prop.name] = entity[prop.name];
             }
         }
         return result;
