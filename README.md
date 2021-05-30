@@ -14,7 +14,7 @@ Your package must be a typescript with following `tsconfig.json` options to work
 
 Example of decoration, taken from tests (`app-user.ts`):
 ```typescript
-import {dataType, defaultValue, entity, lowerCase, objectId, required, string, trim} from "../decorators";
+import {dataType, defaultValue, entity, lowerCase, objectId, required, string, trim} from "../";
 
 @entity()
 @dataType('AppUser')
@@ -40,7 +40,7 @@ export class User {
 
 Example of usage from tests:
 ```typescript
-import {createEmptyEntity, createEntity, forType, preprocessEntity, validateEntity} from "../index";
+import {createEmptyEntity, createEntity, forType, preprocessEntity, validateEntity} from "../";
 import {expect} from "chai";
 import {User} from "./app-user";
 describe('Testing metadata for types', () => {
@@ -85,4 +85,53 @@ describe('Testing metadata for types', () => {
 });
 ```
 
+Example of hidden values declaration:
 
+```typescript
+import {dataType, defaultValue, entity, lowerCase, objectId, required, string, trim, hiddenFromClient} from "../index";
+
+@entity()
+@dataType('AppUser')
+export class User {
+    @objectId()
+    @required()
+    id: string;
+    @string()
+    @required()
+    @lowerCase()
+    email:string;
+    @string()
+    @required()
+    @trim()
+    name: string;
+    @string()
+    @required()
+    @defaultValue('active')
+    status:string;
+    @hiddenFromClient()
+    passwordHash:string;
+    @hiddenFromClient()
+    passwordSalt:string;
+}
+```
+Example of hidden values exclusion from tests
+```typescript
+import {createEntity, excludeHiddenProperties} from "../";
+import {User} from "./app-user";
+import {expect} from 'chai'; 
+
+describe('Check hidden fields', () => {
+    it('Verify hidden fields excluded from client data', () => {
+        let user = createEntity(User, {
+            email:"Test@mail.example",
+            name:"Some name to be tested ",
+            passwordHash:"CRACK ME!",
+            passwordSalt: "VERY SALTY!"
+        }, true);
+        let clientUser = excludeHiddenProperties(user);
+        console.info(clientUser);
+        expect(clientUser).not.haveOwnProperty('passwordHash');
+        expect(clientUser).not.haveOwnProperty('passwordSalt');
+    });
+});
+```

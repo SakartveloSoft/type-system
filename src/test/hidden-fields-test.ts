@@ -1,4 +1,4 @@
-import {createEntity, getClientSafeData} from "../types-manager";
+import {createEntity, excludeHiddenProperties} from "../types-manager";
 import {User} from "./app-user";
 import {expect} from 'chai';
 
@@ -10,9 +10,9 @@ describe('Check hidden fields', () => {
             passwordHash:"CRACK ME!",
             passwordSalt: "VERY SALTY!"
         }, true);
-        let clientUser = getClientSafeData(user);
+        let clientUser = excludeHiddenProperties(user);
         console.info(clientUser);
         expect(clientUser).not.haveOwnProperty('passwordHash');
         expect(clientUser).not.haveOwnProperty('passwordSalt');
     });
-})
+});

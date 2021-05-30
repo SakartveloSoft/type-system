@@ -115,6 +115,6 @@ export function preprocessEntity<T extends IEntity>(entity:T):T {
     return typesManager.preprocess(entity);
 }
 
-export function getClientSafeData<T extends IEntity>(entity:T):Partial<T> {
+export function excludeHiddenProperties<T extends IEntity>(entity:T):Partial<T> {
     return typesManager.excludeHiddenData(entity);
 }
