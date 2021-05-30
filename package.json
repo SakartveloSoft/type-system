@@ -1,8 +1,15 @@
 {
   "name": "@sakartvelosoft/type-system",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A generic library for entities construction and validation based on entity types and decorators",
-  "keywords": ["types", "metadata", "entities", "validation", "typescript", "decorators"],
+  "keywords": [
+    "types",
+    "metadata",
+    "entities",
+    "validation",
+    "typescript",
+    "decorators"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
