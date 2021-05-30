@@ -1,6 +1,6 @@
 import {DataField} from "./data-field";
 import {DataFieldType, ConstructorFunction, IEntity, TypeClass} from "./entity-types";
-
+import {randomBytes} from "crypto";
 export class TypeInfo {
     name:string;
     private readonly _constructor:ConstructorFunction;
@@ -13,13 +13,21 @@ export class TypeInfo {
         this.name = name;
         this._constructor = constructor;
     }
+    generateObjectId():string {
+        let bytes = randomBytes(16);
+        let uint32Values = new Uint32Array(bytes.buffer, 0);
+        return `${uint32Values[0].toString(36)}${uint32Values[1].toString(36)}${uint32Values[2].toString(36)}${uint32Values[3].toString(36)}`.substr(0, 20);
+    }
     create(...args:any[]):any {
         return new (this._constructor)(...args);
     }
-    createWithProperties<T>(properties:Partial<T>):T {
+    createWithProperties<T>(properties:Partial<T>, produceId?:boolean):T {
         let ret = new (this._constructor)();
         for(let prop of Object.keys(properties)) {
             ret[prop] = properties[prop];
+        }
+        if (ret.id === undefined && produceId) {
+            ret.id = this.generateObjectId();
         }
         return ret;
     }
@@ -84,9 +92,13 @@ export function createEmptyEntity<T extends IEntity>(classRef:TypeClass<T>) :T {
     return typesManager.preprocess(type.create(), true);
 }
 
-export function createEntity<T extends IEntity>(classRef: TypeClass<T>, properties:Partial<T>) {
+export function generateObjectId<T extends IEntity>(classRef:TypeClass<T>):string {
+    return forType(classRef).generateObjectId();
+}
+
+export function createEntity<T extends IEntity>(classRef: TypeClass<T>, properties:Partial<T>, produceId?:boolean) {
     let type = forType(classRef);
-    return typesManager.preprocess(type.createWithProperties(properties));
+    return typesManager.preprocess(type.createWithProperties(properties, produceId), true);
 }
 
 export function preprocessEntity<T extends IEntity>(entity:T):T {
