@@ -7,9 +7,12 @@ This package provides:
 Applying these decorators does not provide the actual functionality for data persistence and other aspects.
 This package intended to be a part of a broader ecosystem.
 
-Your package must be a typescript with following `tsconfig.json` options to work seamless:
+Your package must be a typescript with at least following `tsconfig.json` options to work seamless:
 ```json
-
+ {  
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+} 
 ```
 
 Example of decoration, taken from tests (`app-user.ts`):
