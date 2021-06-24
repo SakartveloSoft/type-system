@@ -1,6 +1,6 @@
 {
   "name": "@sakartvelosoft/type-system",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A generic library for entities construction and validation based on entity types and decorators",
   "keywords": [
     "types",
